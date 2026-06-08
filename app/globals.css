@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-dark: #4A3F35;
+  --card-bg: #6B5B4C;
+  --plans-bg: #5A4D40;
+  --text-main: #FFF5E1;
+  --text-accent: #C4B4A0;
+  --gold-highlight: #E5B567;
+  --accent-pop: #7BA3A8;
+  --border-subtle: #544E48;
+  --section-border: #756758;
+}
+
+/* Badge Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes rotate-y {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.badge-float {
+  animation: float 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+.badge-rotate {
+  animation: rotate-y 7s linear infinite;
+  will-change: transform;
+}
+
+.badge-container {
+  perspective: 1000px;
+}
+
+.badge-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.8s ease-in-out;
+}
+
+.badge-shine:hover::before {
+  left: 100%;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Card Flip Animations */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
