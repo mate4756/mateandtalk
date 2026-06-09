@@ -177,6 +177,7 @@ export default function Home() {
   const [lastCommentTime, setLastCommentTime] = useState<number>(0);
   const [rateLimitError, setRateLimitError] = useState<string | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [isProcessingCheckout, setIsProcessingCheckout] = useState(false);
 
   const handleModuleExplore = (module: typeof modules[0]) => {
     const isLocked = module.isLocked && !hasPlan && !isAdminMode;
@@ -214,6 +215,31 @@ export default function Home() {
     setRateLimitError(null);
     setComment('');
     setTurnstileToken(null);
+  };
+
+  const handleCheckout = async (priceId: string) => {
+    setIsProcessingCheckout(true);
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ priceId }),
+      });
+
+      const { url } = await response.json();
+      
+      if (url) {
+        window.location.href = url;
+      } else {
+        console.error('Failed to get checkout URL');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+    } finally {
+      setIsProcessingCheckout(false);
+    }
   };
 
   const badges = [
@@ -557,9 +583,11 @@ export default function Home() {
                   <h3 className="font-['Playfair_Display'] text-3xl font-semibold mb-2" style={{ color: 'var(--text-main)' }}>Standard</h3>
                   <p style={{ color: 'var(--text-accent)' }}>Perfect for dedicated learners</p>
                 </div>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-bold" style={{ color: 'var(--text-main)' }}>$19.99</span>
-                  <span style={{ color: 'var(--text-accent)' }}>/month</span>
+                <div className="space-y-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-bold" style={{ color: 'var(--text-main)' }}>$19.99</span>
+                  </div>
+                  <p className="text-sm" style={{ color: 'var(--gold-highlight)' }}>One-time payment</p>
                 </div>
                 <ul className="space-y-4">
                   <li className="flex items-center gap-3" style={{ color: 'var(--text-accent)' }}>
@@ -583,8 +611,13 @@ export default function Home() {
                     Weekly quizzes
                   </li>
                 </ul>
-                <button className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold" style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)' }}>
-                  Get Started
+                <button 
+                  onClick={() => handleCheckout(process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID!)}
+                  disabled={isProcessingCheckout}
+                  className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)' }}
+                >
+                  {isProcessingCheckout ? 'Processing...' : 'Get Started'}
                 </button>
               </div>
             </div>
@@ -625,8 +658,13 @@ export default function Home() {
                     Exclusive missions & badges
                   </li>
                 </ul>
-                <button className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold" style={{ backgroundColor: '#E5B567', color: 'var(--bg-dark)' }}>
-                  Go Premium
+                <button 
+                  onClick={() => handleCheckout(process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID!)}
+                  disabled={isProcessingCheckout}
+                  className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ backgroundColor: '#E5B567', color: 'var(--bg-dark)' }}
+                >
+                  {isProcessingCheckout ? 'Processing...' : 'Go Premium'}
                 </button>
               </div>
             </div>
