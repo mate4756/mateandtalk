@@ -12,7 +12,7 @@ export default function CommunityMessage() {
 
   return (
     <section className="max-w-6xl mx-auto px-6 py-6 md:py-8">
-      <div className="backdrop-blur-sm rounded-2xl p-6 md:p-10 shadow-lg transition-all duration-300 hover:scale-[1.01]" style={{ 
+      <div className="rounded-2xl p-6 md:p-10 shadow-lg transition-all duration-300 hover:scale-[1.01]" style={{ 
         backgroundColor: 'rgba(229, 181, 103, 0.08)', 
         border: '1px solid rgba(229, 181, 103, 0.3)'
       }}>

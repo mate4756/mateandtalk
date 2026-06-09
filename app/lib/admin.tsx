@@ -6,7 +6,16 @@ import { useUser } from '@clerk/nextjs';
 export function useAdminMode() {
   try {
     const { isAdminMode, setAdminMode } = useAdminContext();
-    return { isAdminMode, setAdminMode };
+    const { user } = useUser();
+
+    // Only allow admin mode for specific user
+    const ADMIN_USER_ID = 'user_3Emd2ZLWUqQcKPmt4uGTjrilks7';
+    const isAuthorizedUser = user && user.id === ADMIN_USER_ID;
+
+    return { 
+      isAdminMode: isAdminMode && isAuthorizedUser, 
+      setAdminMode: isAuthorizedUser ? setAdminMode : () => {} 
+    };
   } catch (error) {
     console.warn('useAdminMode must be used within an AdminProvider, using fallback');
     return { isAdminMode: false, setAdminMode: () => {} };
