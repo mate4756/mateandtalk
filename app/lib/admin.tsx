@@ -1,6 +1,7 @@
 'use client';
 
 import { useAdminContext } from '../providers/AdminProvider';
+import { useUser } from '@clerk/nextjs';
 
 export function useAdminMode() {
   try {
@@ -19,6 +20,14 @@ export function AdminIndicator({ isAdminMode }: { isAdminMode: boolean }) {
 
 export function AdminAccess() {
   const { isAdminMode, setAdminMode } = useAdminMode();
+  const { user } = useUser();
+
+  // Only show admin button for specific user
+  const ADMIN_USER_ID = 'user_3Emd2ZLWUqQcKPmt4uGTjrilks7';
+
+  if (!user || user.id !== ADMIN_USER_ID) {
+    return null;
+  }
 
   return (
     <button

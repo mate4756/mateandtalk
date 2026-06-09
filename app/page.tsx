@@ -492,7 +492,7 @@ export default function Home() {
               const isComingSoon = module.id === 'music' || module.id === 'everyday';
               return (
                 <div key={module.id} className="backdrop-blur-sm rounded-2xl p-8 hover:scale-105 transition-all duration-300 group" style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--border-subtle)' }}>
-                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 group-hover:opacity-80 transition-all duration-300" style={{ backgroundColor: 'var(--card-bg)' }}>
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition-all duration-300" style={{ backgroundColor: 'var(--card-bg)' }}>
                     <span className="text-2xl" style={{ color: 'var(--accent-pop)' }}>{module.icon}</span>
                   </div>
                   <h3 className="font-['Playfair_Display'] text-2xl font-semibold mb-4" style={{ color: 'var(--text-main)' }}>{module.title}</h3>
