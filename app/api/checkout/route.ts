@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-05-27.dahlia',
-});
-
 export async function POST(req: NextRequest) {
+  // Health check: Verify environment variables are available at runtime
+  console.log('=== CHECKOUT ROUTE HEALTH CHECK ===');
+  console.log('STRIPE_SECRET_KEY present:', !!process.env.STRIPE_SECRET_KEY);
+  console.log('NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID present:', !!process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID);
+  console.log('NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID present:', !!process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID);
+  console.log('NEXT_PUBLIC_BASE_URL present:', !!process.env.NEXT_PUBLIC_BASE_URL);
+  console.log('===================================');
+
   try {
     const { priceId } = await req.json();
 
@@ -18,6 +22,20 @@ export async function POST(req: NextRequest) {
     }
 
     console.log('Checkout request received for priceId:', priceId);
+
+    // Initialize Stripe at runtime to ensure environment variables are available
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeSecretKey) {
+      console.error('CRITICAL: STRIPE_SECRET_KEY is not available at runtime');
+      return NextResponse.json(
+        { error: 'Server configuration error: Stripe key not available' },
+        { status: 500 }
+      );
+    }
+
+    const stripe = new Stripe(stripeSecretKey, {
+      apiVersion: '2026-05-27.dahlia',
+    });
 
     // Determine payment mode based on price ID
     const standardPriceId = process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID;
