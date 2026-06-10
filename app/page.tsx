@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthVerification, getAuthErrorMessage } from './lib/auth';
 import { AdminAccess, useAdminMode } from './lib/admin';
-import { Turnstile } from './components/Turnstile';
 import { SignInButton, UserButton, useUser } from '@clerk/nextjs';
 import WeeklyQuiz from './components/WeeklyQuiz';
 import CommunityMessage from './components/CommunityMessage';
@@ -172,7 +171,6 @@ export default function Home() {
   
   // Comments access: only require authentication (signed in)
   const canAccessComments = isSignedIn;
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [comment, setComment] = useState('');
   const [lastCommentTime, setLastCommentTime] = useState<number>(0);
   const [rateLimitError, setRateLimitError] = useState<string | null>(null);
@@ -205,16 +203,11 @@ export default function Home() {
       return;
     }
 
-    if (!turnstileToken) {
-      setRateLimitError('Please complete the human verification.');
-      return;
-    }
 
     // Submit comment logic here
     setLastCommentTime(now);
     setRateLimitError(null);
     setComment('');
-    setTurnstileToken(null);
   };
 
   const handleCheckout = async (priceId: string) => {
@@ -768,12 +761,6 @@ export default function Home() {
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                   />
-                  <div className="mt-4">
-                    <Turnstile
-                      siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
-                      onVerify={(token) => setTurnstileToken(token)}
-                    />
-                  </div>
                   {rateLimitError && (
                     <p className="mt-2 text-sm" style={{ color: '#E5B567' }}>{rateLimitError}</p>
                   )}
