@@ -64,7 +64,7 @@ export default function TelegramPremiumPage() {
         {/* Call to Action */}
         <div className="text-center">
           <a
-            href="https://t.me/your-telegram-channel"
+            href="https://t.me/+1oT2iJSxQyE4ODEx"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-12 py-5 rounded-lg hover:scale-105 transition-all duration-300 font-bold text-xl"
