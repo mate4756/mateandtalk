@@ -152,7 +152,7 @@ const modules = [
   },
   {
     id: 'telegram',
-    title: 'Telegram Premium',
+    title: 'Join Telegram Premium',
     description: 'Join our exclusive Telegram channel for personalized Argentine learning.',
     icon: '💬',
     route: '/telegram-premium',

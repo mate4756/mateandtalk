@@ -10,7 +10,7 @@ export default function TelegramPremiumPage() {
         {/* Welcome Section */}
         <div className="text-center mb-16">
           <h1 className="font-['Playfair_Display'] text-5xl md:text-6xl font-bold mb-6" style={{ color: 'var(--text-main)' }}>
-            ¡Bienvenido al Nivel Premium!
+            Join Telegram Premium
           </h1>
           <p className="text-xl md:text-2xl mb-4" style={{ color: 'var(--text-accent)' }}>
             Thank you for supporting the project and joining our exclusive community.
