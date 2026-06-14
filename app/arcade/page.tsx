@@ -91,16 +91,9 @@ export default function ArcadePage() {
                 <h3 className="font-['Playfair_Display'] text-xl font-bold mb-3" style={{ color: 'var(--gold-highlight)' }}>
                   Enjoyed the game?
                 </h3>
-                <p className="text-base mb-6" style={{ color: 'var(--text-accent)' }}>
-                  That's just the beginning. Immerse yourself in authentic Argentine Spanish, learn the culture behind the matches, and join our vibrant community. Start your journey with us today!
+                <p className="text-base leading-relaxed" style={{ color: 'var(--text-accent)' }}>
+                  That's just the beginning. Immerse yourself in authentic Argentine Spanish, learn the culture behind the matches, and join our vibrant community. Head back to the menu and check out our plans—we're keeping prices locked for the next 3 months, so it's the perfect time to start your journey.
                 </p>
-                <Link
-                  href="#plans"
-                  className="inline-block px-6 py-3 rounded-lg hover:scale-105 transition-all duration-300 font-semibold"
-                  style={{ backgroundColor: 'var(--gold-highlight)', color: 'var(--bg-dark)' }}
-                >
-                  Join the Community
-                </Link>
               </div>
             </div>
 
