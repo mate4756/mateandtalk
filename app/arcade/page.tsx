@@ -85,6 +85,23 @@ export default function ArcadePage() {
                   Use arrow keys or touch controls to duck and dodge obstacles. The further you go, the higher your score!
                 </p>
               </div>
+
+              {/* Educational Hook */}
+              <div className="mt-8 p-6 rounded-lg text-center" style={{ backgroundColor: 'var(--plans-bg)', border: '1px solid var(--border-subtle)' }}>
+                <h3 className="font-['Playfair_Display'] text-xl font-bold mb-3" style={{ color: 'var(--gold-highlight)' }}>
+                  Enjoyed the game?
+                </h3>
+                <p className="text-base mb-6" style={{ color: 'var(--text-accent)' }}>
+                  That's just the beginning. Immerse yourself in authentic Argentine Spanish, learn the culture behind the matches, and join our vibrant community. Start your journey with us today!
+                </p>
+                <Link
+                  href="#plans"
+                  className="inline-block px-6 py-3 rounded-lg hover:scale-105 transition-all duration-300 font-semibold"
+                  style={{ backgroundColor: 'var(--gold-highlight)', color: 'var(--bg-dark)' }}
+                >
+                  Join the Community
+                </Link>
+              </div>
             </div>
 
             {/* Leaderboard */}

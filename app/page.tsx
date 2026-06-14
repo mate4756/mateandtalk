@@ -406,11 +406,11 @@ export default function Home() {
               <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
                 <span className="text-4xl">⚽</span>
                 <h2 className="font-['Playfair_Display'] text-2xl md:text-3xl font-bold" style={{ color: 'var(--gold-highlight)' }}>
-                  The World Cup is coming!
+                  Feel the World Cup fever! ⚽
                 </h2>
               </div>
               <p className="text-lg" style={{ color: 'var(--text-accent)' }}>
-                While you wait, practice your skills in our new Arcade section and get ready to climb the leaderboard.
+                Waiting for the next Argentina match? Master your reflexes with our exclusive game, The Last Run. Prove you're the ultimate fan and dominate the leaderboard!
               </p>
             </div>
             <Link
@@ -418,7 +418,7 @@ export default function Home() {
               className="px-8 py-4 rounded-lg hover:scale-105 transition-all duration-300 font-bold text-lg shadow-lg"
               style={{ backgroundColor: 'var(--gold-highlight)', color: 'var(--bg-dark)' }}
             >
-              Play Now
+              Start Your Run
             </Link>
           </div>
         </div>
