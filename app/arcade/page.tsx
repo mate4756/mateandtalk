@@ -61,19 +61,15 @@ export default function ArcadePage() {
                 </p>
               </div>
 
-              {/* Game Iframe Placeholder */}
+              {/* Game Iframe */}
               <div className="relative w-full" style={{ aspectRatio: '16/9', backgroundColor: '#2A2420', borderRadius: '12px', overflow: 'hidden' }}>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-4xl mb-4">🏃</div>
-                    <p className="text-lg" style={{ color: 'var(--text-accent)' }}>
-                      Game Embed Coming Soon
-                    </p>
-                    <p className="text-sm mt-2" style={{ color: 'var(--text-accent)', opacity: 0.7 }}>
-                      Side-scrolling dodge game
-                    </p>
-                  </div>
-                </div>
+                <iframe
+                  src="/the-last-run/index.html"
+                  className="w-full h-full border-0"
+                  allow="fullscreen"
+                  title="The Last Run Game"
+                  style={{ borderRadius: '12px' }}
+                />
               </div>
 
               {/* Instructions */}
