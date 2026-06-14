@@ -98,17 +98,17 @@ const dictionaryTerms = [
   {
     term: "Mina",
     meaning: "Woman/girl.",
-    context: "Informal. Note: Italian origin.",
+    context: "Informal.",
   },
   {
     term: "Morfar",
     meaning: "To eat.",
-    context: "Very informal. Note: Italian origin.",
+    context: "Very informal.",
   },
   {
     term: "Pibe",
     meaning: "Kid/young boy.",
-    context: "Informal. Note: Italian origin.",
+    context: "Informal.",
   },
   {
     term: "Trucho",
@@ -327,7 +327,11 @@ export default function Home() {
               </span>
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5B567] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <button className="font-medium transition-all duration-300 hover:text-[#E5B567] relative group" style={{ color: 'var(--text-accent)' }}>
+            <button 
+              onClick={scrollToComments}
+              className="font-medium transition-all duration-300 hover:text-[#E5B567] relative group"
+              style={{ color: 'var(--text-accent)' }}
+            >
               <span className="flex items-center gap-2">
                 💬 Global Comments
               </span>
