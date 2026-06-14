@@ -157,6 +157,14 @@ const modules = [
     icon: '💬',
     route: '/telegram-premium',
     isLocked: true
+  },
+  {
+    id: 'arcade',
+    title: 'Arcade',
+    description: 'Test your skills in The Last Run and compete for the top spot on our global leaderboard.',
+    icon: '🎮',
+    route: '/arcade',
+    isLocked: false
   }
 ];
 
