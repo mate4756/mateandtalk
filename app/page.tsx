@@ -398,6 +398,32 @@ export default function Home() {
         </div>
       </section>
 
+      {/* World Cup Banner */}
+      <section className="max-w-6xl mx-auto px-6 py-8">
+        <div className="backdrop-blur-sm rounded-2xl p-8 md:p-12" style={{ backgroundColor: 'var(--card-bg)', border: '2px solid var(--gold-highlight)' }}>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                <span className="text-4xl">⚽</span>
+                <h2 className="font-['Playfair_Display'] text-2xl md:text-3xl font-bold" style={{ color: 'var(--gold-highlight)' }}>
+                  The World Cup is coming!
+                </h2>
+              </div>
+              <p className="text-lg" style={{ color: 'var(--text-accent)' }}>
+                While you wait, practice your skills in our new Arcade section and get ready to climb the leaderboard.
+              </p>
+            </div>
+            <Link
+              href="/arcade"
+              className="px-8 py-4 rounded-lg hover:scale-105 transition-all duration-300 font-bold text-lg shadow-lg"
+              style={{ backgroundColor: 'var(--gold-highlight)', color: 'var(--bg-dark)' }}
+            >
+              Play Now
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Weekly Quiz Section */}
       <section className="max-w-6xl mx-auto px-6 py-12 md:py-16">
         <WeeklyQuiz />

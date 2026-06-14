@@ -7,13 +7,13 @@ import { SignInButton, UserButton, useUser } from '@clerk/nextjs';
 export default function ArcadePage() {
   const { isSignedIn, user } = useUser();
 
-  // Placeholder leaderboard data
-  const leaderboardData = [
-    { rank: 1, username: 'SpeedDemon', score: 15420 },
-    { rank: 2, username: 'ArgentineAce', score: 12850 },
-    { rank: 3, username: 'MateMaster', score: 11200 },
-    { rank: 4, username: 'DodgeKing', score: 9870 },
-    { rank: 5, username: 'ReflexPro', score: 8540 },
+  // Empty leaderboard state
+  const leaderboardData: Array<{ rank: number; username: string | null; score: number | null }> = [
+    { rank: 1, username: null, score: null },
+    { rank: 2, username: null, score: null },
+    { rank: 3, username: null, score: null },
+    { rank: 4, username: null, score: null },
+    { rank: 5, username: null, score: null },
   ];
 
   return (
@@ -35,14 +35,14 @@ export default function ArcadePage() {
             <div className="max-w-2xl mx-auto">
               <div className="text-6xl mb-6">🎮</div>
               <h2 className="font-['Playfair_Display'] text-3xl font-bold mb-4" style={{ color: 'var(--gold-highlight)' }}>
-                Unlock The Last Run
+                Sign in to access The Last Run
               </h2>
               <p className="text-lg mb-8" style={{ color: 'var(--text-accent)' }}>
-                Sign up to start your run and compete for the top spot on our global leaderboard.
+                Sign in to access The Last Run and climb the leaderboard.
               </p>
               <SignInButton mode="modal">
                 <button className="px-8 py-4 rounded-lg hover:scale-105 transition-all duration-300 font-bold text-lg" style={{ backgroundColor: 'var(--gold-highlight)', color: 'var(--bg-dark)' }}>
-                  Sign Up / Login
+                  Sign In / Register
                 </button>
               </SignInButton>
             </div>
@@ -123,10 +123,10 @@ export default function ArcadePage() {
                           </span>
                         </td>
                         <td className="py-4 px-4" style={{ color: 'var(--text-main)' }}>
-                          {entry.username}
+                          {entry.username || 'Waiting for a champion...'}
                         </td>
                         <td className="py-4 px-4 text-right font-mono" style={{ color: 'var(--gold-highlight)' }}>
-                          {entry.score.toLocaleString()}
+                          {entry.score ? entry.score.toLocaleString() : 'Waiting for a champion...'}
                         </td>
                       </tr>
                     ))}
