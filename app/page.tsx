@@ -8,6 +8,7 @@ import { AdminAccess, useAdminMode } from './lib/admin';
 import { SignInButton, UserButton, useUser } from '@clerk/nextjs';
 import WeeklyQuiz from './components/WeeklyQuiz';
 import CommunityMessage from './components/CommunityMessage';
+import { getPaddle } from '@/lib/paddle';
 
 const dictionaryTerms = [
   {
@@ -215,6 +216,17 @@ export default function Home() {
     setLastCommentTime(now);
     setRateLimitError(null);
     setComment('');
+  };
+
+  const handlePaddleCheckout = async (priceId: string) => {
+    try {
+      const paddle = await getPaddle();
+      paddle.Checkout.open({
+        items: [{ priceId, quantity: 1 }],
+      });
+    } catch (error) {
+      console.error('Paddle checkout error:', error);
+    }
   };
 
   const badges = [
@@ -617,10 +629,11 @@ export default function Home() {
                   </li>
                 </ul>
                 <button 
+                  onClick={() => handlePaddleCheckout(process.env.NEXT_PUBLIC_PRICE_ID_STANDARD!)}
                   className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold"
                   style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)' }}
                 >
-                  Contact for Pricing
+                  Get Started
                 </button>
               </div>
             </div>
@@ -662,10 +675,11 @@ export default function Home() {
                   </li>
                 </ul>
                 <button 
+                  onClick={() => handlePaddleCheckout(process.env.NEXT_PUBLIC_PRICE_ID_PREMIUM!)}
                   className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold"
                   style={{ backgroundColor: '#E5B567', color: 'var(--bg-dark)' }}
                 >
-                  Contact for Pricing
+                  Buy Now
                 </button>
               </div>
             </div>
