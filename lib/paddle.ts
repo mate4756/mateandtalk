@@ -5,7 +5,7 @@ let paddle: any = null;
 export async function getPaddle() {
   if (!paddle) {
     paddle = await initializePaddle({
-      environment: 'sandbox',
+      environment: 'production',
       token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN as string,
     });
   }
