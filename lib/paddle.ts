@@ -8,10 +8,8 @@ export async function getPaddle() {
     const isDevelopment = process.env.NODE_ENV === 'development';
     const isPreview = typeof window !== 'undefined' && (
       window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1' ||
-      window.location.hostname.includes('.vercel.app')
+      window.location.hostname === '127.0.0.1'
     );
-    
     const environment = (isDevelopment || isPreview) ? 'sandbox' : 'production';
     
     // Use appropriate token based on environment
