@@ -924,6 +924,7 @@ export default function Home() {
             <Link href="/contact" className="transition-colors duration-300 hover:text-[#E5B567]" style={{ color: 'var(--text-accent)' }}>Contact</Link>
             <Link href="/privacy" className="transition-colors duration-300 hover:text-[#E5B567]" style={{ color: 'var(--text-accent)' }}>Privacy</Link>
             <Link href="/terms" className="transition-colors duration-300 hover:text-[#E5B567]" style={{ color: 'var(--text-accent)' }}>Terms</Link>
+            <Link href="/refund-policy" className="transition-colors duration-300 hover:text-[#E5B567]" style={{ color: 'var(--text-accent)' }}>Refund Policy</Link>
           </div>
           <p className="text-sm mt-8" style={{ color: 'var(--text-accent)' }}>© 2024 Mateandtalk. All rights reserved.</p>
         </div>
