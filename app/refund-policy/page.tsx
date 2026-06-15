@@ -41,10 +41,10 @@ export default function RefundPolicyPage() {
 
               <section>
                 <h2 className="font-['Playfair_Display'] text-2xl font-bold mb-4" style={{ color: 'var(--gold-highlight)' }}>
-                  Digital Products & Content
+                  Platform Access & Services
                 </h2>
                 <p style={{ color: 'var(--text-accent)' }}>
-                  Due to the nature of our products (digital ebooks, game assets, and digital access), all sales are considered final once the access has been granted or the file has been downloaded.
+                  As our service provides immediate access to digital modules, learning resources, and participation in exclusive monthly quizzes upon successful payment, all sales are considered final once your account access has been activated or the first module has been unlocked.
                 </p>
               </section>
 
@@ -56,7 +56,7 @@ export default function RefundPolicyPage() {
                   We only offer refunds in the following exceptional cases:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4" style={{ color: 'var(--text-accent)' }}>
-                  <li>The product is found to be technically defective or corrupted.</li>
+                  <li>Technical issues preventing access to the platform or your subscribed modules.</li>
                   <li>A duplicate charge occurred due to a technical error.</li>
                 </ul>
               </section>
