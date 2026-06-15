@@ -183,7 +183,6 @@ export default function Home() {
   const [lastCommentTime, setLastCommentTime] = useState<number>(0);
   const [rateLimitError, setRateLimitError] = useState<string | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
-  const [isProcessingCheckout, setIsProcessingCheckout] = useState(false);
 
   const handleModuleExplore = (module: typeof modules[0]) => {
     const isLocked = module.isLocked && !hasPlan && !isAdminMode;
@@ -216,31 +215,6 @@ export default function Home() {
     setLastCommentTime(now);
     setRateLimitError(null);
     setComment('');
-  };
-
-  const handleCheckout = async (priceId: string) => {
-    setIsProcessingCheckout(true);
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ priceId }),
-      });
-
-      const { url } = await response.json();
-      
-      if (url) {
-        window.location.href = url;
-      } else {
-        console.error('Failed to get checkout URL');
-      }
-    } catch (error) {
-      console.error('Checkout error:', error);
-    } finally {
-      setIsProcessingCheckout(false);
-    }
   };
 
   const badges = [
@@ -643,12 +617,10 @@ export default function Home() {
                   </li>
                 </ul>
                 <button 
-                  onClick={() => handleCheckout(process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID!)}
-                  disabled={isProcessingCheckout}
-                  className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold"
                   style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)' }}
                 >
-                  {isProcessingCheckout ? 'Processing...' : 'Get Started'}
+                  Contact for Pricing
                 </button>
               </div>
             </div>
@@ -690,12 +662,10 @@ export default function Home() {
                   </li>
                 </ul>
                 <button 
-                  onClick={() => handleCheckout(process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID!)}
-                  disabled={isProcessingCheckout}
-                  className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-lg hover:scale-[1.02] transition-all duration-300 font-semibold"
                   style={{ backgroundColor: '#E5B567', color: 'var(--bg-dark)' }}
                 >
-                  {isProcessingCheckout ? 'Processing...' : 'Go Premium'}
+                  Contact for Pricing
                 </button>
               </div>
             </div>
