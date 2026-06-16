@@ -849,40 +849,53 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8 badge-container">
-              {badges.map((badge) => (
-                <div
-                  key={badge.id}
-                  onClick={() => setSelectedBadge(selectedBadge === badge.id ? null : badge.id)}
-                  className="backdrop-blur-sm rounded-xl p-6 cursor-pointer transition-all duration-300 hover:scale-105"
-                  style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--border-subtle)' }}
-                >
-                  <div className="relative badge-shine">
-                    <img 
-                      src={badge.image} 
-                      alt={badge.name} 
-                      className="w-full h-auto rounded-lg filter grayscale opacity-70 badge-float badge-rotate"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="text-4xl">🔒</span>
+              {badges.map((badge) => {
+                const isUnlocked = user && (
+                  (badge.id === 'argentina' && (user.publicMetadata?.plan === 'standard' || user.publicMetadata?.plan === 'premium')) ||
+                  (badge.id === 'escarapela' && user.publicMetadata?.hasPostedComment === true) ||
+                  (badge.id === 'mate' && user.publicMetadata?.plan === 'premium')
+                );
+                
+                return (
+                  <div
+                    key={badge.id}
+                    onClick={() => setSelectedBadge(selectedBadge === badge.id ? null : badge.id)}
+                    className="backdrop-blur-sm rounded-xl p-6 cursor-pointer transition-all duration-300 hover:scale-105"
+                    style={{ 
+                      backgroundColor: 'var(--card-bg)', 
+                      border: isUnlocked ? '1px solid #E5B567' : '1px solid var(--border-subtle)'
+                    }}
+                  >
+                    <div className="relative badge-shine">
+                      <img 
+                        src={badge.image} 
+                        alt={badge.name} 
+                        className={`w-full h-auto rounded-lg badge-float badge-rotate ${isUnlocked ? '' : 'filter grayscale opacity-70'}`}
+                      />
+                      {!isUnlocked && (
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <span className="text-4xl">🔒</span>
+                        </div>
+                      )}
                     </div>
+                    <h3 className="font-semibold mt-4 text-center" style={{ color: 'var(--text-main)' }}>{badge.name}</h3>
+                    <p className="text-xs text-center mt-1" style={{ color: 'var(--text-accent)' }}>{badge.plan} Plan</p>
+                    
+                    {selectedBadge === badge.id && (
+                      <div className="mt-4 pt-4 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+                        <p className="text-sm font-semibold mb-2" style={{ color: 'var(--gold-highlight)' }}>
+                          Requirements:
+                        </p>
+                        <ul className="space-y-1 text-sm" style={{ color: 'var(--text-accent)' }}>
+                          {badge.requirements.map((req, idx) => (
+                            <li key={idx}>• {req}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                  <h3 className="font-semibold mt-4 text-center" style={{ color: 'var(--text-main)' }}>{badge.name}</h3>
-                  <p className="text-xs text-center mt-1" style={{ color: 'var(--text-accent)' }}>{badge.plan} Plan</p>
-                  
-                  {selectedBadge === badge.id && (
-                    <div className="mt-4 pt-4 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-                      <p className="text-sm font-semibold mb-2" style={{ color: 'var(--gold-highlight)' }}>
-                        Requirements:
-                      </p>
-                      <ul className="space-y-1 text-sm" style={{ color: 'var(--text-accent)' }}>
-                        {badge.requirements.map((req, idx) => (
-                          <li key={idx}>• {req}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="pt-8 border-t" style={{ borderColor: 'var(--border-subtle)' }}>

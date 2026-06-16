@@ -14,6 +14,9 @@ export function isBadgeUnlocked(badge: Badge, user: User | null): boolean {
   const userPlan = user.publicMetadata?.plan as string | undefined;
   const hasPostedComment = user.publicMetadata?.hasPostedComment as boolean | undefined;
 
+  // Debug log to see user metadata in real-time
+  console.log(`[BadgeLogic] Checking badge: ${badge.id}, User plan: ${userPlan}, Has posted comment: ${hasPostedComment}`);
+
   switch (badge.id) {
     case 'argentina':
       // Argentina Badge: Unlocked automatically when user purchases Standard Plan
