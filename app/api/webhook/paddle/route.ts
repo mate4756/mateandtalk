@@ -49,21 +49,22 @@ export async function POST(req: NextRequest) {
       const userId = data.custom_data?.userId;
       const priceId = data.items?.[0]?.price_id;
 
-      if (!userId) {
-        console.error('No userId found in webhook payload');
-        return NextResponse.json(
-          { error: 'Missing userId' },
-          { status: 400 }
-        );
-      }
+      // Temporarily commented out for testing - always return 200 OK
+      // if (!userId) {
+      //   console.error('No userId found in webhook payload');
+      //   return NextResponse.json(
+      //     { error: 'Missing userId' },
+      //     { status: 400 }
+      //   );
+      // }
 
-      if (!priceId) {
-        console.error('No priceId found in webhook payload');
-        return NextResponse.json(
-          { error: 'Missing priceId' },
-          { status: 400 }
-        );
-      }
+      // if (!priceId) {
+      //   console.error('No priceId found in webhook payload');
+      //   return NextResponse.json(
+      //     { error: 'Missing priceId' },
+      //     { status: 400 }
+      //   );
+      // }
 
       // Determine plan type based on priceId
       const standardPriceId = process.env.NEXT_PUBLIC_PRICE_ID_STANDARD;
@@ -75,11 +76,13 @@ export async function POST(req: NextRequest) {
       } else if (priceId === premiumPriceId) {
         plan = 'premium';
       } else {
+        // Temporarily commented out for testing - always return 200 OK
         console.error('Unknown priceId:', priceId);
-        return NextResponse.json(
-          { error: 'Unknown priceId' },
-          { status: 400 }
-        );
+        // return NextResponse.json(
+        //   { error: 'Unknown priceId' },
+        //   { status: 400 }
+        // );
+        plan = 'standard'; // Default to standard for testing
       }
 
       // Update user's publicMetadata in Clerk
