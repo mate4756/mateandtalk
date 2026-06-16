@@ -11,6 +11,7 @@ export default function ProfilePage() {
   const [username, setUsername] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [achievements, setAchievements] = useState<any>(null);
+  const [showBadge, setShowBadge] = useState(false);
 
   // Track achievements on page load
   useAchievementTracking();
@@ -19,6 +20,7 @@ export default function ProfilePage() {
     if (isLoaded && user) {
       setUsername(user.firstName || '');
       setAchievements(getUserAchievements(user));
+      setShowBadge(user.publicMetadata?.showBadge === true);
     }
   }, [isLoaded, user]);
 
@@ -32,6 +34,29 @@ export default function ProfilePage() {
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating username:', error);
+    }
+  };
+
+  const handleBadgeToggle = async () => {
+    if (!user) return;
+
+    try {
+      const newValue = !showBadge;
+      setShowBadge(newValue);
+      
+      // Save to Clerk metadata
+      await fetch('/api/update-badge-preference', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          showBadge: newValue,
+        }),
+      });
+    } catch (error) {
+      console.error('Error updating badge preference:', error);
     }
   };
 
@@ -129,6 +154,29 @@ export default function ProfilePage() {
               <p className="text-lg" style={{ color: 'var(--text-main)' }}>
                 {user.publicMetadata?.plan ? String(user.publicMetadata.plan).toUpperCase() : 'Free'}
               </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-accent)' }}>
+                Show Badge
+              </label>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={handleBadgeToggle}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 ${
+                    showBadge ? 'bg-[#E5B567]' : 'bg-gray-600'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
+                      showBadge ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+                <span className="text-sm" style={{ color: 'var(--text-main)' }}>
+                  {showBadge ? 'Show Badge' : 'Hide Badge'}
+                </span>
+              </div>
             </div>
           </div>
         </div>

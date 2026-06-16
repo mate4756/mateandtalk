@@ -9,6 +9,7 @@ interface RankingEntry {
   badge: string | null;
   hours: number;
   plan: string | null;
+  showBadge: boolean;
 }
 
 export default function RankingPage() {
@@ -29,6 +30,7 @@ export default function RankingPage() {
             badge: entry.badge || null,
             hours: entry.weeklyHours,
             plan: entry.plan || null,
+            showBadge: entry.showBadge || false,
           }));
           setRankingData(formattedData);
         }
@@ -36,16 +38,16 @@ export default function RankingPage() {
         console.error('Error fetching ranking:', error);
         // Fallback to mock data if API fails
         const mockData: RankingEntry[] = [
-          { position: 1, username: 'MateLover2024', badge: '👑 Founder', hours: 45.5, plan: 'Premium' },
-          { position: 2, username: 'BuenosAiresFan', badge: '🏅 Standard', hours: 42.3, plan: 'Standard' },
-          { position: 3, username: 'TangoMaster', badge: null, hours: 38.7, plan: 'Premium' },
-          { position: 4, username: 'ArgentineSoul', badge: '🇦🇷 Argentina', hours: 35.2, plan: 'Standard' },
-          { position: 5, username: 'SpanishLearner', badge: null, hours: 32.8, plan: null },
-          { position: 6, username: 'PorteñoVibes', badge: null, hours: 30.1, plan: 'Premium' },
-          { position: 7, username: 'MateExpert', badge: '🏆 Escarapela', hours: 28.5, plan: 'Standard' },
-          { position: 8, username: 'BuenosAiresExplorer', badge: null, hours: 26.3, plan: null },
-          { position: 9, username: 'SpanishJourney', badge: null, hours: 24.7, plan: 'Standard' },
-          { position: 10, username: 'LearningDaily', badge: null, hours: 22.1, plan: null },
+          { position: 1, username: 'MateLover2024', badge: '👑 Founder', hours: 45.5, plan: 'Premium', showBadge: true },
+          { position: 2, username: 'BuenosAiresFan', badge: '🏅 Standard', hours: 42.3, plan: 'Standard', showBadge: true },
+          { position: 3, username: 'TangoMaster', badge: null, hours: 38.7, plan: 'Premium', showBadge: false },
+          { position: 4, username: 'ArgentineSoul', badge: '🇦🇷 Argentina', hours: 35.2, plan: 'Standard', showBadge: true },
+          { position: 5, username: 'SpanishLearner', badge: null, hours: 32.8, plan: null, showBadge: false },
+          { position: 6, username: 'PorteñoVibes', badge: null, hours: 30.1, plan: 'Premium', showBadge: false },
+          { position: 7, username: 'MateExpert', badge: '🏆 Escarapela', hours: 28.5, plan: 'Standard', showBadge: true },
+          { position: 8, username: 'BuenosAiresExplorer', badge: null, hours: 26.3, plan: null, showBadge: false },
+          { position: 9, username: 'SpanishJourney', badge: null, hours: 24.7, plan: 'Standard', showBadge: false },
+          { position: 10, username: 'LearningDaily', badge: null, hours: 22.1, plan: null, showBadge: false },
         ];
         setRankingData(mockData);
       } finally {
@@ -130,7 +132,12 @@ export default function RankingPage() {
                       </span>
                     </td>
                     <td className="py-4 px-4 font-semibold" style={{ color: 'var(--text-main)' }}>
-                      {entry.username}
+                      <div className="flex items-center gap-2">
+                        {entry.username}
+                        {entry.badge && entry.showBadge && (
+                          <span className="text-lg">{entry.badge}</span>
+                        )}
+                      </div>
                     </td>
                     <td className="py-4 px-4">
                       {entry.badge ? (

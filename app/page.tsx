@@ -276,9 +276,8 @@ export default function Home() {
       image: '/assets/badges/badge-pre-mate.png.png',
       plan: 'Premium',
       requirements: [
-        'Complete all learning modules',
-        'Achieve 90%+ in weekly quizzes',
-        'Top 10 in weekly ranking'
+        'Complete Mate Module',
+        'Have Premium Plan'
       ]
     },
     {
@@ -287,9 +286,8 @@ export default function Home() {
       image: '/assets/badges/badge-pre-worldcup.png.png',
       plan: 'Premium',
       requirements: [
-        'Maintain 30-day streak',
-        'Complete 50 community challenges',
-        'Invite 5 friends to join'
+        'Complete Soccer Module',
+        'Play soccer game for 5 consecutive days'
       ]
     }
   ];
