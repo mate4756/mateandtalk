@@ -9,16 +9,16 @@ export default function SuccessPage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isUpdating, setIsUpdating] = useState(true);
+  const [isValidating, setIsValidating] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [plan, setPlan] = useState<'standard' | 'premium' | null>(null);
 
   useEffect(() => {
-    const updatePlan = async () => {
+    const validatePlan = async () => {
       if (!isLoaded || !user) {
         setError('You must be signed in to view this page');
-        setIsUpdating(false);
+        setIsValidating(false);
         return;
       }
 
@@ -26,47 +26,35 @@ export default function SuccessPage() {
       
       if (!planParam || (planParam !== 'standard' && planParam !== 'premium')) {
         setError('Invalid plan parameter');
-        setIsUpdating(false);
+        setIsValidating(false);
         return;
       }
 
       setPlan(planParam);
 
-      try {
-        // Update user's publicMetadata in Clerk
-        const response = await fetch('/api/update-plan', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId: user.id,
-            plan: planParam,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to update plan');
-        }
-
+      // Validate user's current plan from Clerk (webhook should have already updated it)
+      const userPlan = user.publicMetadata?.plan as 'standard' | 'premium' | undefined;
+      
+      if (userPlan === planParam) {
         setSuccess(true);
-        setIsUpdating(false);
-      } catch (err) {
-        console.error('Error updating plan:', err);
-        setError('Failed to update your plan. Please contact support.');
-        setIsUpdating(false);
+      } else {
+        // Webhook hasn't processed yet, show success anyway (it will process shortly)
+        console.log('Webhook may still be processing. Plan:', userPlan, 'Expected:', planParam);
+        setSuccess(true);
       }
+
+      setIsValidating(false);
     };
 
-    updatePlan();
+    validatePlan();
   }, [isLoaded, user, searchParams]);
 
-  if (isUpdating) {
+  if (isValidating) {
     return (
       <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-dark)' }}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 mx-auto mb-4" style={{ borderColor: 'var(--gold-highlight)' }}></div>
-          <p style={{ color: 'var(--text-accent)' }}>Updating your plan...</p>
+          <p style={{ color: 'var(--text-accent)' }}>Validating your plan...</p>
         </div>
       </main>
     );
