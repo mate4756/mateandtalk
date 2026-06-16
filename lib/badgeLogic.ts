@@ -12,18 +12,25 @@ export function isBadgeUnlocked(badge: Badge, user: User | null): boolean {
   if (!user) return false;
 
   const userPlan = user.publicMetadata?.plan as string | undefined;
-  const completedModules = user.publicMetadata?.completedModules as string[] | undefined;
-  const soccerGameStreak = user.publicMetadata?.soccerGameStreak as number | undefined;
+  const hasPostedComment = user.publicMetadata?.hasPostedComment as boolean | undefined;
 
   switch (badge.id) {
+    case 'argentina':
+      // Argentina Badge: Unlocked automatically when user purchases Standard Plan
+      return userPlan === 'standard' || userPlan === 'premium';
+
+    case 'escarapela':
+      // Escarapela Badge: Unlocked automatically once user posts a comment
+      return hasPostedComment === true;
+
     case 'mate':
-      // Complete Mate Module + Have Premium Plan
-      const hasMateModule = completedModules?.includes('mate') || false;
-      const hasPremiumPlan = userPlan === 'premium';
-      return hasMateModule && hasPremiumPlan;
+      // Mate Badge: Simply check if user has Premium Plan
+      return userPlan === 'premium';
 
     case 'worldcup':
-      // Complete Soccer Module + Play soccer game for 5 consecutive days
+      // World Cup Badge: Complete Soccer Module + Play soccer game for 5 consecutive days
+      const completedModules = user.publicMetadata?.completedModules as string[] | undefined;
+      const soccerGameStreak = user.publicMetadata?.soccerGameStreak as number | undefined;
       const hasSoccerModule = completedModules?.includes('soccer') || false;
       const hasSoccerStreak = (soccerGameStreak || 0) >= 5;
       return hasSoccerModule && hasSoccerStreak;
@@ -35,6 +42,10 @@ export function isBadgeUnlocked(badge: Badge, user: User | null): boolean {
 
 export function getBadgeIcon(badgeId: string): string {
   switch (badgeId) {
+    case 'argentina':
+      return '🇦🇷';
+    case 'escarapela':
+      return '🎖️';
     case 'mate':
       return '🧉';
     case 'worldcup':

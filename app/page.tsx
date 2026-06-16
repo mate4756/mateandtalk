@@ -254,9 +254,7 @@ export default function Home() {
       image: '/assets/badges/badge-std-argentina.png.png',
       plan: 'Standard',
       requirements: [
-        'Complete 5 dictionary quizzes',
-        'Master 20 essential terms',
-        'Participate in 3 community discussions'
+        'Purchase Standard Plan'
       ]
     },
     {
@@ -265,9 +263,7 @@ export default function Home() {
       image: '/assets/badges/badge-std-escarapela.png.png',
       plan: 'Standard',
       requirements: [
-        'Complete the Football module',
-        'Score 80%+ in Context Master',
-        'Unlock 10 stadium chants'
+        'Post a comment in Global Comments'
       ]
     },
     {
@@ -276,7 +272,6 @@ export default function Home() {
       image: '/assets/badges/badge-pre-mate.png.png',
       plan: 'Premium',
       requirements: [
-        'Complete Mate Module',
         'Have Premium Plan'
       ]
     },
