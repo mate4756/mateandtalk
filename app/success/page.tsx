@@ -15,15 +15,19 @@ export default function SuccessPage() {
   const [plan, setPlan] = useState<'standard' | 'premium' | null>(null);
 
   useEffect(() => {
-    const validatePlan = async () => {
-      if (!isLoaded || !user) {
+    // 1. SIEMPRE esperamos a que Clerk termine de cargar
+    if (!isLoaded) return;
+
+    const validatePlan = () => {
+      // 2. Ahora que cargó, recién acá verificamos si hay usuario
+      if (!user) {
         setError('You must be signed in to view this page');
         setIsValidating(false);
         return;
       }
 
       const planParam = searchParams.get('plan') as 'standard' | 'premium' | null;
-      
+
       if (!planParam || (planParam !== 'standard' && planParam !== 'premium')) {
         setError('Invalid plan parameter');
         setIsValidating(false);
@@ -31,18 +35,10 @@ export default function SuccessPage() {
       }
 
       setPlan(planParam);
-
-      // Validate user's current plan from Clerk (webhook should have already updated it)
-      const userPlan = user.publicMetadata?.plan as 'standard' | 'premium' | undefined;
       
-      if (userPlan === planParam) {
-        setSuccess(true);
-      } else {
-        // Webhook hasn't processed yet, show success anyway (it will process shortly)
-        console.log('Webhook may still be processing. Plan:', userPlan, 'Expected:', planParam);
-        setSuccess(true);
-      }
-
+      // 3. Dejamos que el usuario vea la pantalla de éxito SIEMPRE
+      // La validación de metadatos es secundaria ahora
+      setSuccess(true);
       setIsValidating(false);
     };
 
