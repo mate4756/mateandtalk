@@ -173,7 +173,7 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [selectedBadge, setSelectedBadge] = useState<string | null>(null);
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
   const { hasPlan } = useAuthVerification();
   const { isAdminMode } = useAdminMode();
   const router = useRouter();
@@ -184,6 +184,7 @@ export default function Home() {
   const [lastCommentTime, setLastCommentTime] = useState<number>(0);
   const [rateLimitError, setRateLimitError] = useState<string | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
 
   const handleModuleExplore = (module: typeof modules[0]) => {
     const isLocked = module.isLocked && !hasPlan && !isAdminMode;
@@ -219,8 +220,14 @@ export default function Home() {
   };
 
   const handlePaddleCheckout = async (priceId: string) => {
+    if (!user) {
+      // User is not logged in, show sign-in modal
+      setShowSignInModal(true);
+      return;
+    }
+
     try {
-      const paddle = await getPaddle();
+      const paddle = await getPaddle(user.id);
       paddle.Checkout.open({
         items: [{ priceId, quantity: 1 }],
       });
@@ -943,6 +950,40 @@ export default function Home() {
                 >
                   View Plans
                 </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sign In Modal */}
+      {showSignInModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setShowSignInModal(false)}>
+          <div className="backdrop-blur-sm rounded-2xl p-8 max-w-md mx-4" style={{ backgroundColor: 'var(--card-bg)', border: '2px solid #E5B567' }}>
+            <div className="text-center space-y-4">
+              <div className="text-4xl mb-4">🔐</div>
+              <h3 className="font-['Playfair_Display'] text-2xl font-bold" style={{ color: 'var(--text-main)' }}>
+                Sign In Required
+              </h3>
+              <p className="text-lg" style={{ color: 'var(--text-accent)' }}>
+                Please sign in to purchase a plan and access premium content.
+              </p>
+              <div className="flex gap-4 justify-center pt-4">
+                <button
+                  onClick={() => setShowSignInModal(false)}
+                  className="px-6 py-3 rounded-lg hover:scale-105 transition-all duration-300 font-semibold"
+                  style={{ backgroundColor: 'var(--border-subtle)', color: 'var(--text-main)' }}
+                >
+                  Cancel
+                </button>
+                <SignInButton mode="modal">
+                  <button
+                    className="px-6 py-3 rounded-lg hover:scale-105 transition-all duration-300 font-semibold"
+                    style={{ backgroundColor: 'var(--gold-highlight)', color: 'var(--bg-dark)' }}
+                  >
+                    Sign In
+                  </button>
+                </SignInButton>
               </div>
             </div>
           </div>
