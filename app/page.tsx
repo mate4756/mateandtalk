@@ -228,8 +228,19 @@ export default function Home() {
 
     try {
       const paddle = await getPaddle(user.id);
+      
+      // Determine plan based on priceId
+      const standardPriceId = process.env.NEXT_PUBLIC_PRICE_ID_STANDARD;
+      const premiumPriceId = process.env.NEXT_PUBLIC_PRICE_ID_PREMIUM;
+      const plan = priceId === standardPriceId ? 'standard' : 'premium';
+      
       paddle.Checkout.open({
         items: [{ priceId, quantity: 1 }],
+        settings: {
+          displayMode: 'overlay',
+          theme: 'light',
+          successUrl: `${window.location.origin}/success?plan=${plan}`,
+        },
       });
     } catch (error) {
       console.error('Paddle checkout error:', error);
