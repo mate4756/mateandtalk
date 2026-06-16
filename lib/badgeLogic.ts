@@ -1,5 +1,3 @@
-import { User } from '@clerk/nextjs/server';
-
 export interface Badge {
   id: string;
   name: string;
@@ -8,7 +6,7 @@ export interface Badge {
   requirements: string[];
 }
 
-export function isBadgeUnlocked(badge: Badge, user: User | null): boolean {
+export function isBadgeUnlocked(badge: Badge, user: any): boolean {
   if (!user) return false;
 
   const userPlan = user.publicMetadata?.plan as string | undefined;

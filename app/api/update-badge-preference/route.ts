@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, showBadge } = await req.json();
+    const { userId, showBadge, selectedBadge } = await req.json();
 
     if (!userId) {
       return NextResponse.json(
@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
     await clerkClient.users.updateUser(userId, {
       publicMetadata: {
         showBadge,
+        selectedBadge,
       },
     });
 

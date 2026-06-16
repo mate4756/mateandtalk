@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useUser } from '@clerk/nextjs';
 import { getUserAchievements, ACHIEVEMENTS } from '../lib/achievements';
 import { useAchievementTracking } from '../lib/achievementTracking';
+import { isBadgeUnlocked, getBadgeIcon, Badge } from '../../lib/badgeLogic';
 
 export default function ProfilePage() {
   const { user, isLoaded } = useUser();
@@ -12,6 +13,8 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [achievements, setAchievements] = useState<any>(null);
   const [showBadge, setShowBadge] = useState(false);
+  const [selectedBadge, setSelectedBadge] = useState<string | null>(null);
+  const [unlockedBadges, setUnlockedBadges] = useState<Badge[]>([]);
 
   // Track achievements on page load
   useAchievementTracking();
@@ -21,6 +24,42 @@ export default function ProfilePage() {
       setUsername(user.firstName || '');
       setAchievements(getUserAchievements(user));
       setShowBadge(user.publicMetadata?.showBadge === true);
+      setSelectedBadge(user.publicMetadata?.selectedBadge as string || null);
+
+      // Calculate unlocked badges
+      const allBadges: Badge[] = [
+        {
+          id: 'argentina',
+          name: 'Argentina Badge',
+          image: '/assets/badges/badge-std-argentina.png.png',
+          plan: 'Standard',
+          requirements: ['Purchase Standard Plan']
+        },
+        {
+          id: 'escarapela',
+          name: 'Escarapela Badge',
+          image: '/assets/badges/badge-std-escarapela.png.png',
+          plan: 'Standard',
+          requirements: ['Post a comment in Global Comments']
+        },
+        {
+          id: 'mate',
+          name: 'Mate Badge',
+          image: '/assets/badges/badge-pre-mate.png.png',
+          plan: 'Premium',
+          requirements: ['Have Premium Plan']
+        },
+        {
+          id: 'worldcup',
+          name: 'World Cup 2026 Badge',
+          image: '/assets/badges/badge-pre-worldcup.png.png',
+          plan: 'Premium',
+          requirements: ['Complete Soccer Module', 'Play soccer game for 5 consecutive days']
+        }
+      ];
+
+      const unlocked = allBadges.filter(badge => isBadgeUnlocked(badge, user));
+      setUnlockedBadges(unlocked);
     }
   }, [isLoaded, user]);
 
@@ -53,10 +92,34 @@ export default function ProfilePage() {
         body: JSON.stringify({
           userId: user.id,
           showBadge: newValue,
+          selectedBadge: selectedBadge,
         }),
       });
     } catch (error) {
       console.error('Error updating badge preference:', error);
+    }
+  };
+
+  const handleBadgeSelection = async (badgeId: string) => {
+    if (!user) return;
+
+    try {
+      setSelectedBadge(badgeId);
+      
+      // Save to Clerk metadata
+      await fetch('/api/update-badge-preference', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          showBadge: showBadge,
+          selectedBadge: badgeId,
+        }),
+      });
+    } catch (error) {
+      console.error('Error updating badge selection:', error);
     }
   };
 
@@ -121,9 +184,14 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <div className="flex items-center justify-between">
-                  <p className="text-lg" style={{ color: 'var(--text-main)' }}>
-                    {username || 'No name'}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-lg" style={{ color: 'var(--text-main)' }}>
+                      {username || 'No name'}
+                    </p>
+                    {showBadge && selectedBadge && (
+                      <span className="text-lg">{getBadgeIcon(selectedBadge)}</span>
+                    )}
+                  </div>
                   <button
                     onClick={() => setIsEditing(true)}
                     className="px-4 py-2 rounded-lg hover:scale-105 transition-all duration-300 font-semibold"
@@ -178,6 +246,27 @@ export default function ProfilePage() {
                 </span>
               </div>
             </div>
+
+            {showBadge && unlockedBadges.length > 1 && (
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-accent)' }}>
+                  Select Badge to Display
+                </label>
+                <select
+                  value={selectedBadge || ''}
+                  onChange={(e) => handleBadgeSelection(e.target.value)}
+                  className="w-full rounded-lg p-3 transition-all duration-300"
+                  style={{ backgroundColor: 'var(--bg-dark)', border: '1px solid var(--border-subtle)', color: 'var(--text-main)' }}
+                >
+                  <option value="">Select a badge</option>
+                  {unlockedBadges.map((badge) => (
+                    <option key={badge.id} value={badge.id}>
+                      {badge.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </div>
 
