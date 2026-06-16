@@ -12,6 +12,7 @@ export default function SuccessPage() {
   const [isUpdating, setIsUpdating] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [plan, setPlan] = useState<'standard' | 'premium' | null>(null);
 
   useEffect(() => {
     const updatePlan = async () => {
@@ -21,13 +22,15 @@ export default function SuccessPage() {
         return;
       }
 
-      const plan = searchParams.get('plan') as 'standard' | 'premium' | null;
+      const planParam = searchParams.get('plan') as 'standard' | 'premium' | null;
       
-      if (!plan || (plan !== 'standard' && plan !== 'premium')) {
+      if (!planParam || (planParam !== 'standard' && planParam !== 'premium')) {
         setError('Invalid plan parameter');
         setIsUpdating(false);
         return;
       }
+
+      setPlan(planParam);
 
       try {
         // Update user's publicMetadata in Clerk
@@ -38,7 +41,7 @@ export default function SuccessPage() {
           },
           body: JSON.stringify({
             userId: user.id,
-            plan,
+            plan: planParam,
           }),
         });
 
@@ -93,20 +96,25 @@ export default function SuccessPage() {
   }
 
   if (success) {
+    const isPremium = plan === 'premium';
+    
     return (
       <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-dark)' }}>
-        <div className="text-center max-w-md mx-4">
-          <div className="text-6xl mb-4">✅</div>
-          <h1 className="font-['Playfair_Display'] text-3xl font-bold mb-4" style={{ color: 'var(--text-main)' }}>
-            Payment Successful!
+        <div className="text-center max-w-2xl mx-4 px-6 py-12">
+          <div className="text-6xl mb-6">{isPremium ? '🌟' : '✅'}</div>
+          <h1 className="font-['Playfair_Display'] text-4xl md:text-5xl font-bold mb-6" style={{ color: 'var(--text-main)' }}>
+            {isPremium ? 'Welcome to the Premium plan!' : 'Congratulations!'}
           </h1>
-          <p className="text-lg mb-8" style={{ color: 'var(--text-accent)' }}>
-            Your plan has been updated successfully. You now have access to all premium features.
+          <p className="text-lg md:text-xl leading-relaxed mb-8" style={{ color: 'var(--text-accent)' }}>
+            {isPremium 
+              ? 'We are thrilled to have you here. You now have full access to all exclusive features and priority support. We hope this journey helps you achieve all your goals. Your feedback is invaluable, so please don\'t hesitate to reach out via our official email or the comments section. Welcome to the family!'
+              : 'Congratulations on acquiring your plan and becoming part of the family! We hope you enjoy the learning journey. If you have any suggestions, feel free to use the comments section or send us an email at our official address. Wishing you the best during your stay!'
+            }
           </p>
           <Link
             href="/"
             className="inline-block px-8 py-3 rounded-lg hover:scale-105 transition-all duration-300 font-semibold"
-            style={{ backgroundColor: 'var(--gold-highlight)', color: 'var(--bg-dark)' }}
+            style={{ backgroundColor: isPremium ? '#E5B567' : 'var(--gold-highlight)', color: 'var(--bg-dark)' }}
           >
             Go to Home
           </Link>
