@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useUser } from '@clerk/nextjs';
 import { getUserAchievements, ACHIEVEMENTS } from '../lib/achievements';
 import { useAchievementTracking } from '../lib/achievementTracking';
-import { isBadgeUnlocked, getBadgeIcon, Badge } from '../../lib/badgeLogic';
+import { isBadgeUnlocked, getBadgeIcon, Badge, BADGES } from '../../lib/badgeLogic';
 
 export default function ProfilePage() {
   const { user, isLoaded } = useUser();
@@ -318,33 +318,39 @@ export default function ProfilePage() {
         </div>
 
         {/* Badges Section */}
-        {achievements?.unlockedBadges && achievements.unlockedBadges.length > 0 && (
-          <div className="backdrop-blur-sm rounded-2xl p-8 mb-8" style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--border-subtle)' }}>
-            <h2 className="font-['Playfair_Display'] text-2xl font-semibold mb-6" style={{ color: 'var(--text-main)' }}>
-              Unlocked Badges
-            </h2>
+        <div className="backdrop-blur-sm rounded-2xl p-8 mb-8" style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--border-subtle)' }}>
+          <h2 className="font-['Playfair_Display'] text-2xl font-semibold mb-6" style={{ color: 'var(--text-main)' }}>
+            Unlocked Badges
+          </h2>
 
+          {unlockedBadges.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {achievements.unlockedBadges.map((badgeId: string) => (
+              {unlockedBadges.map((badge) => (
                 <div
-                  key={badgeId}
+                  key={badge.id}
                   className="p-4 rounded-lg text-center transition-all duration-300 hover:scale-105"
                   style={{ 
                     backgroundColor: 'rgba(229, 181, 103, 0.1)',
                     border: '1px solid #E5B567'
                   }}
                 >
-                  <div className="text-4xl mb-2">
-                    {badgeId === 'standard-badge' ? '🏅' : badgeId === 'premium-badge' ? '👑' : '🎖️'}
-                  </div>
+                  <img
+                    src={badge.image}
+                    alt={badge.name}
+                    className="w-16 h-16 mx-auto mb-2 rounded-full"
+                  />
                   <p className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>
-                    {badgeId === 'standard-badge' ? 'Standard' : badgeId === 'premium-badge' ? 'Premium' : 'Badge'}
+                    {badge.name}
                   </p>
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <p className="text-center" style={{ color: 'var(--text-accent)' }}>
+              No badges unlocked yet
+            </p>
+          )}
+        </div>
 
         {/* Streak Section */}
         {achievements && (

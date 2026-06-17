@@ -6,6 +6,37 @@ export interface Badge {
   requirements: string[];
 }
 
+export const BADGES: Badge[] = [
+  {
+    id: 'argentina',
+    name: 'Argentina Badge',
+    image: '/assets/badges/badge-std-argentina.png.png',
+    plan: 'Standard',
+    requirements: ['Purchase Standard Plan']
+  },
+  {
+    id: 'escarapela',
+    name: 'Escarapela Badge',
+    image: '/assets/badges/badge-std-escarapela.png.png',
+    plan: 'Standard',
+    requirements: ['Post a comment in Global Comments']
+  },
+  {
+    id: 'mate',
+    name: 'Mate Badge',
+    image: '/assets/badges/badge-pre-mate.png.png',
+    plan: 'Premium',
+    requirements: ['Have Premium Plan']
+  },
+  {
+    id: 'worldcup',
+    name: 'World Cup 2026 Badge',
+    image: '/assets/badges/badge-pre-worldcup.png.png',
+    plan: 'Premium',
+    requirements: ['Complete Soccer Module', 'Play soccer game for 5 consecutive days']
+  }
+];
+
 export function isBadgeUnlocked(badge: Badge, user: any): boolean {
   if (!user) return false;
 
