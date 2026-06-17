@@ -189,7 +189,11 @@ export default function ProfilePage() {
                       {username || 'No name'}
                     </p>
                     {showBadge && selectedBadge && (
-                      <span className="text-lg">{getBadgeIcon(selectedBadge)}</span>
+                      <img
+                        src={getBadgeIcon(selectedBadge)}
+                        alt="Badge"
+                        className="w-6 h-6 rounded-full"
+                      />
                     )}
                   </div>
                   <button

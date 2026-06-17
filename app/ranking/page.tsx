@@ -138,7 +138,11 @@ export default function RankingPage() {
                       <div className="flex items-center gap-2">
                         {entry.username}
                         {entry.showBadge && entry.selectedBadge && (
-                          <span className="text-lg">{getBadgeIcon(entry.selectedBadge)}</span>
+                          <img
+                            src={getBadgeIcon(entry.selectedBadge)}
+                            alt="Badge"
+                            className="w-6 h-6 rounded-full"
+                          />
                         )}
                       </div>
                     </td>

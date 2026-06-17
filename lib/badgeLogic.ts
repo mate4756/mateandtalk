@@ -44,14 +44,14 @@ export function isBadgeUnlocked(badge: Badge, user: any): boolean {
 export function getBadgeIcon(badgeId: string): string {
   switch (badgeId) {
     case 'argentina':
-      return '🇦🇷';
+      return '/assets/badges/badge-std-argentina.png.png';
     case 'escarapela':
-      return '🎖️';
+      return '/assets/badges/badge-std-escarapela.png.png';
     case 'mate':
-      return '🧉';
+      return '/assets/badges/badge-pre-mate.png.png';
     case 'worldcup':
-      return '⚽';
+      return '/assets/badges/badge-pre-worldcup.png.png';
     default:
-      return '🎖️';
+      return '/assets/badges/badge-std-escarapela.png.png';
   }
 }
